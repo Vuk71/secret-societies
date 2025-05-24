@@ -1,0 +1,86 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+}
+
+@layer base {
+  :root {
+    --background: 0 70% 9%; /* #260808 Dark Desaturated Red */
+    --foreground: 0 0% 98%; /* Almost White */
+
+    --card: 0 60% 12%; /* #310A0A Slightly lighter dark red */
+    --card-foreground: 0 0% 98%;
+
+    --popover: 0 60% 12%; /* #310A0A */
+    --popover-foreground: 0 0% 98%;
+
+    --primary: 0 74% 42%; /* #B91C1C Deep Crimson */
+    --primary-foreground: 0 0% 98%;
+
+    --secondary: 0 70% 25%; /* #6A1313 Another shade of red */
+    --secondary-foreground: 0 0% 98%;
+
+    --muted: 0 60% 20%; /* #520D0D */
+    --muted-foreground: 0 0% 60%; /* Lighter gray for muted text */
+
+    --accent: 48 100% 45%; /* #E4B700 Golden Yellow */
+    --accent-foreground: 0 0% 10%; /* Dark for text on accent */
+
+    --destructive: 0 63% 31%; /* Default Dark Red for destructive */
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 0 50% 30%; /* #4C1111 */
+    --input: 0 50% 25%; /* #400E0E */
+    --ring: 48 100% 55%; /* #FFD02A Lighter Gold for ring */
+
+    --radius: 0.5rem;
+
+    /* Chart colors can be adjusted if needed, using defaults for now */
+    --chart-1: 12 76% 61%;
+    --chart-2: 173 58% 39%;
+    --chart-3: 197 37% 24%;
+    --chart-4: 43 74% 66%;
+    --chart-5: 27 87% 67%;
+    
+    /* Sidebar specific colors, aligned with the theme */
+    --sidebar-background: 0 70% 7%; /* #1F0606 Even darker red */
+    --sidebar-foreground: 0 0% 85%;
+    --sidebar-primary: 0 74% 42%; /* #B91C1C */
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 0 70% 25%; /* #6A1313 */
+    --sidebar-accent-foreground: 0 0% 98%;
+    --sidebar-border: 0 50% 20%; /* #330C0C */
+    --sidebar-ring: 48 100% 55%; /* #FFD02A */
+
+    /* HSL values for direct use in rgba if needed by animations */
+    --accent-hsl: 48, 100%, 45%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+@layer utilities {
+  @keyframes slow-pulse {
+    0%, 100% { 
+      opacity: 1;
+      box-shadow: 0 0 0 0px hsl(var(--accent) / 0.7);
+    }
+    50% { 
+      opacity: 0.85;
+      box-shadow: 0 0 0 0.4rem hsl(var(--accent) / 0); 
+    }
+  }
+  .animate-slow-pulse {
+    animation: slow-pulse 2.5s infinite ease-in-out;
+  }
+}
