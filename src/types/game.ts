@@ -113,8 +113,8 @@ export const ZONE_NAMES: ZoneName[] = [
 
 export const ZONES_DATA: Omit<Zone, 'secretDeck'>[] = [
   { name: "Royal Chamber", borders: ["Courtyard", "Cathedral"] },
-  { name: "Cathedral", borders: ["Eastern Town Square", "Trading Bailey", "Royal Chamber"] },
-  { name: "Courtyard", borders: ["Western Town Square", "Trading Bailey", "Royal Chamber"] },
+  { name: "Cathedral", borders: ["Courtyard", "Eastern Town Square", "Trading Bailey", "Royal Chamber"] },
+  { name: "Courtyard", borders: ["Cathedral", "Western Town Square", "Trading Bailey", "Royal Chamber"] },
   { name: "Trading Bailey", borders: ["Cathedral", "Courtyard", "Docks and Gates", "Eastern Town Square", "Western Town Square"] },
   { name: "Docks and Gates", borders: ["Eastern Town Square", "Western Town Square", "Trading Bailey"] },
   { name: "Eastern Town Square", borders: ["Docks and Gates", "Cathedral", "Trading Bailey"] },

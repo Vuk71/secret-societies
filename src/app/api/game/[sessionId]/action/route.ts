@@ -237,7 +237,7 @@ export async function POST(
         const targetPlayer = gameData.players[targetPlayerIndex];
         const oldValue = targetPlayer[resourceType];
         let newValue = oldValue + amount;
-        if (resourceType !== 'secrecy') newValue = Math.max(0, newValue); 
+        newValue = Math.max(0, newValue); 
         targetPlayer[resourceType] = newValue;
         gameData.players[targetPlayerIndex] = targetPlayer;
         serverAddLog(`${targetPlayer.name}'s ${resourceType} changed by ${amount}. Old: ${oldValue}, New: ${newValue}.`);
