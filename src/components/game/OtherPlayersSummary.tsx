@@ -1,4 +1,3 @@
-
 "use client";
 
 import type { Player, SecretCard, PlayerResourceType, StoredSecretCardReference, ZoneName } from "@/types/game";
@@ -8,6 +7,8 @@ import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { SecretCardTooltipContent } from './HandDisplay';
 import { cn } from "@/lib/utils";
+import { useState } from "react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
 interface OtherPlayersSummaryProps {
   players: Player[];
@@ -75,6 +76,7 @@ export function OtherPlayersSummary({
     getFullCardDetails,
     isInteractionDisabled = false 
 }: OtherPlayersSummaryProps) {
+  const [visibleHandPlayerId, setVisibleHandPlayerId] = useState<string | null>(null);
   const otherPlayers = players.filter(p => p.id !== currentPlayerId && !p.isEliminated);
 
   if (otherPlayers.length === 0) {
@@ -119,20 +121,55 @@ export function OtherPlayersSummary({
                 variant="outline"
                 size="sm"
                 className="mt-3 text-xs w-full py-1.5"
-                onClick={() => onGainInsight(player.id)}
+                onClick={() => {
+                  setVisibleHandPlayerId(player.id);
+                  if (typeof onGainInsight === 'function') {
+                    onGainInsight(player.id);
+                  }
+                }}
                 disabled={isSubmittingAction || isInteractionDisabled}
-                title={`Request to see ${player.name}'s hand`}
+                title={`See ${player.name}'s hand`}
             >
                 <EyeIcon className="w-3.5 h-3.5 mr-1.5" /> Gain Insight (Hand)
             </Button>
+            <Dialog open={visibleHandPlayerId === player.id} onOpenChange={open => { if (!open) setVisibleHandPlayerId(null); }}>
+              <DialogContent className="max-w-xl">
+                <DialogHeader>
+                  <DialogTitle>{player.name}'s Hand ({player.hand.length} cards)</DialogTitle>
+                </DialogHeader>
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 py-2" style={{ maxHeight: '50vh', overflowY: 'auto' }}>
+                  {player.hand.length > 0 ? player.hand.map(cardRef => {
+                    const card = getFullCardDetails(cardRef);
+                    if (!card) return <div key={cardRef.instanceId} className="text-xs text-red-500">Error loading card {cardRef.id}</div>;
+                    return (
+                      <TooltipProvider key={card.instanceId}>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <Card className="p-2 bg-card/70 relative group cursor-pointer">
+                              <h4 className="font-semibold text-xs text-accent truncate" title={card.name}>
+                                {card.name} <span className="text-muted-foreground">({card.rarity})</span>
+                              </h4>
+                              <p className="text-xs text-muted-foreground mt-0.5">Zone: {card.zone}</p>
+                            </Card>
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <SecretCardTooltipContent card={card} />
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
+                    );
+                  }) : <div className="text-xs italic text-muted-foreground">Hand is empty.</div>}
+                </div>
+              </DialogContent>
+            </Dialog>
             <div className="mt-3 pt-2 border-t border-border/30 space-y-1.5">
               <h5 className="text-xs font-semibold text-primary-foreground mb-1">Masks:</h5>
-              {MASK_ORDER_OPPONENT.map(maskType => (
+              {Array.isArray(MASK_ORDER_OPPONENT) && MASK_ORDER_OPPONENT.map(maskType => (
                 <OpponentMaskSlot
                   key={maskType}
                   maskType={maskType}
                   cardRef={player.masks[maskType]} 
-                  isPulsing={(revealedMaskTypesThisTurn || []).includes(maskType)}
+                  isPulsing={Array.isArray(revealedMaskTypesThisTurn) && revealedMaskTypesThisTurn.includes(maskType)}
                   getFullCardDetails={getFullCardDetails}
                 />
               ))}
@@ -162,4 +199,4 @@ export function OtherPlayersSummary({
 }
 
 const HandIcon: React.FC = () => <Scroll className="w-3.5 h-3.5 mr-1.5 text-orange-400" />;
-    
+

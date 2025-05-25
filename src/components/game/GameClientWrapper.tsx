@@ -273,7 +273,7 @@ export function GameClientWrapper({ initialSessionId }: GameClientWrapperProps) 
                 setVcSelectionOffer({ vcs: data.offeredVCs, selectedVcId: null });
                 setIsVcDialogTemporarilyHidden(false);
             } else if (result && !result.success) {
-                toast({ title: "VC Offer Error", description: result.error || "Could not fetch Victory Condition options.", variant: "destructive" });
+                //toast({ title: "VC Offer Error", description: result.error || "Could not fetch Victory Condition options.", variant: "destructive" });
             }
         }
     };
@@ -379,7 +379,7 @@ export function GameClientWrapper({ initialSessionId }: GameClientWrapperProps) 
     }
     const selectedVC = vcSelectionOffer.vcs.find(v => v.id === vcId);
     if (!selectedVC) {
-        toast({ title: "Victory Condition Selection Error", description: "Invalid VC chosen.", variant: "destructive" });
+        //toast({ title: "Victory Condition Selection Error", description: "Invalid VC chosen.", variant: "destructive" });
         return;
     }
     const payload = { playerId: thisPlayerId, vcId };

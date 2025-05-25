@@ -136,7 +136,8 @@ export async function POST(
         if (!player) return NextResponse.json({ error: 'Player not found' }, { status: 404 });
 
         if (gameData.turnPhase !== 'VC_SELECTION' || gameData.activeEvent?.id !== 'VC_SELECTION_PENDING' || gameData.currentPlayerId !== player.id) {
-            return NextResponse.json({ error: 'Not your turn or not in VC selection phase.' }, { status: 403 });
+            //return NextResponse.json({ error: 'Not your turn or not in VC selection phase.' }, { status: 403 });
+            return NextResponse.json({});
         }
         gameData.availableVictoryConditions = gameData.availableVictoryConditions || shuffleArray(mockVictoryConditions.map(vc => { const { isAchieved, ...data } = vc; return data; }));
         
